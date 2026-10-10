@@ -12,18 +12,7 @@ export const register = async (userData) => {
 
 export const logout = async () => {
   try {
-    const token = localStorage.getItem("token");
-    if (token) {
-      await API.post(
-        "/auth/logout",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-    }
+    await API.post("/auth/logout");
   } catch (error) {
     console.error("Logout request error:", error);
   } finally {
@@ -33,12 +22,7 @@ export const logout = async () => {
 };
 
 export const getProfile = async () => {
-  const token = localStorage.getItem("token");
-  const response = await API.get("/auth/me", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const response = await API.get("/auth/me");
   return response.data;
 };
 

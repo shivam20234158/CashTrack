@@ -4,6 +4,14 @@ import User from "../models/user.model.js";
 import { generateToken } from "../utils/token.util.js";
 import { blacklistToken } from "../config/redis.config.js";
 
+const getCookieOptions = () => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+  path: "/",
+});
+
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -43,6 +51,8 @@ export const registerUser = async (req, res) => {
     });
 
     const token = generateToken(user._id);
+
+    res.cookie("token", token, getCookieOptions());
 
     return res.status(201).json({
       success: true,
@@ -86,6 +96,8 @@ export const loginUser = async (req, res) => {
 
     const token = generateToken(user._id);
 
+    res.cookie("token", token, getCookieOptions());
+
     return res.status(200).json({
       success: true,
       message: "Login Successful",
@@ -117,6 +129,9 @@ export const logoutUser = async (req, res) => {
 
       await blacklistToken(token, remainingSeconds);
     }
+
+    const { maxAge, ...clearOptions } = getCookieOptions();
+    res.clearCookie("token", clearOptions);
 
     return res.status(200).json({
       success: true,

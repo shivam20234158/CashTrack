@@ -1,28 +1,22 @@
 import API from "./api.js";
 
-const getAuthConfig = () => ({
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
-});
-
 export const getIncome = async () => {
-  const response = await API.get("/income", getAuthConfig());
+  const response = await API.get("/income");
   return response.data;
 };
 
 export const addIncome = async (incomeData) => {
-  const response = await API.post("/income", incomeData, getAuthConfig());
+  const response = await API.post("/income", incomeData);
   return response.data;
 };
 
 export const updateIncome = async (id, incomeData) => {
-  const response = await API.put(`/income/${id}`, incomeData, getAuthConfig());
+  const response = await API.put(`/income/${id}`, incomeData);
   return response.data;
 };
 
 export const deleteIncome = async (id) => {
-  const response = await API.delete(`/income/${id}`, getAuthConfig());
+  const response = await API.delete(`/income/${id}`);
   return response.data;
 };
 

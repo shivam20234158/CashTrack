@@ -19,7 +19,6 @@ function Login() {
     setLoading(true);
     try {
       const data = await login({ email, password });
-      localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data));
       toast.success("Welcome back 👋");
       navigate("/dashboard");

@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import dns from "dns";
 
 dotenv.config();
@@ -29,7 +30,6 @@ const allowedOrigins = [
   "http://localhost:5174",
   "http://127.0.0.1:5174",
   "http://localhost:3000",
-  "https://fin-track-two-rose.vercel.app",
 ];
 
 // CORS middleware
@@ -51,8 +51,9 @@ app.use(
   })
 );
 
-// Parse JSON request bodies
+// Parse JSON request bodies and cookies
 app.use(express.json());
+app.use(cookieParser());
 
 // Connect to MongoDB
 connectDB();

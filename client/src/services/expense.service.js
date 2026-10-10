@@ -1,11 +1,5 @@
 import API from "./api.js";
 
-const getAuthConfig = () => ({
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
-});
-
 export const getExpenses = async (
   page = 1,
   search = "",
@@ -13,28 +7,23 @@ export const getExpenses = async (
   sort = "newest"
 ) => {
   const response = await API.get(
-    `/expenses?page=${page}&search=${search}&category=${category}&sort=${sort}`,
-    getAuthConfig()
+    `/expenses?page=${page}&search=${search}&category=${category}&sort=${sort}`
   );
   return response.data;
 };
 
 export const addExpense = async (expenseData) => {
-  const response = await API.post("/expenses", expenseData, getAuthConfig());
+  const response = await API.post("/expenses", expenseData);
   return response.data;
 };
 
 export const deleteExpense = async (id) => {
-  const response = await API.delete(`/expenses/${id}`, getAuthConfig());
+  const response = await API.delete(`/expenses/${id}`);
   return response.data;
 };
 
 export const updateExpense = async (id, expenseData) => {
-  const response = await API.put(
-    `/expenses/${id}`,
-    expenseData,
-    getAuthConfig()
-  );
+  const response = await API.put(`/expenses/${id}`, expenseData);
   return response.data;
 };
 
